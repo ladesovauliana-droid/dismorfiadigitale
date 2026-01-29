@@ -1,0 +1,620 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DISMORFIA DIGITALE</title>
+    <style>
+        /* RESET ESSENZIALE */
+        * { 
+            margin: 0; 
+            padding: 0; 
+            box-sizing: border-box; 
+        }
+        
+        /* TIPOGRAFIA ISPIRATA A FLASH ART */
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500&display=swap');
+        
+        :root {
+            --black: #000000;
+            --white: #ffffff;
+            --gray-dark: #333333;
+            --gray-medium: #666666;
+            --gray-light: #f0f0f0;
+            --accent: #ff3366;
+        }
+        
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--white);
+            color: var(--black);
+            font-weight: 300;
+            line-height: 1.6;
+            overflow-x: hidden;
+            min-height: 100vh;
+        }
+        
+        /* CONTAINER E LAYOUT */
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 40px;
+        }
+        
+        /* HEADER - IMPAGINATO DA RIVISTA */
+        .header {
+            text-align: left;
+            padding: 5rem 0 4rem;
+            position: relative;
+        }
+        
+        .title {
+            font-size: 5.5rem;
+            font-weight: 300;
+            letter-spacing: -0.03em;
+            margin-bottom: 0.5rem;
+            line-height: 0.92;
+            text-transform: none;
+            position: relative;
+        }
+        
+        .title::after {
+            content: '';
+            position: absolute;
+            bottom: -15px;
+            left: 0;
+            width: 80px;
+            height: 1px;
+            background: var(--black);
+        }
+        
+        .subtitle {
+            font-size: 1.2rem;
+            color: var(--gray-medium);
+            font-weight: 400;
+            max-width: 700px;
+            line-height: 1.5;
+            margin-top: 2rem;
+        }
+        
+        /* NAVIGAZIONE MINIMALISTA */
+        .nav {
+            position: fixed;
+            top: 40px;
+            right: 40px;
+            z-index: 1000;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        .nav a {
+            color: var(--black);
+            text-decoration: none;
+            margin-left: 30px;
+            transition: opacity 0.3s;
+        }
+        
+        .nav a:hover {
+            opacity: 0.5;
+        }
+        
+        /* SLIDESHOW SLOGAN */
+        .slogan-slideshow {
+            position: fixed;
+            bottom: 40px;
+            left: 40px;
+            z-index: 1000;
+            font-size: 1rem;
+            color: var(--gray-medium);
+            max-width: 300px;
+            height: 60px;
+            overflow: hidden;
+        }
+        
+        .slogan-container {
+            position: relative;
+            height: 100%;
+        }
+        
+        .slogan {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 1.2s ease, transform 1.2s ease;
+            font-style: italic;
+            line-height: 1.4;
+        }
+        
+        .slogan.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        /* SEZIONI ESPERIENZE - LAYOUT E LEGENDA */
+        .experiences {
+            margin: 0 0 8rem 0;
+        }
+        
+        .experience-item {
+            margin: 10rem 0;
+            position: relative;
+        }
+        
+        .experience-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 3rem;
+        }
+        
+        .experience-title {
+            font-size: 2.2rem;
+            font-weight: 400;
+            letter-spacing: -0.02em;
+            text-transform: none;
+            color: var(--black);
+            flex: 1;
+        }
+        
+        .experience-meta {
+            flex: 1;
+            text-align: right;
+            font-size: 0.9rem;
+            color: var(--gray-medium);
+            line-height: 1.4;
+        }
+        
+        .experience-description {
+            font-size: 1.1rem;
+            color: var(--gray-dark);
+            max-width: 600px;
+            line-height: 1.6;
+            margin-bottom: 4rem;
+        }
+        
+        /* CONTENITORE IFRAME - BIANCO E PURO */
+        .cables-frame {
+            width: 100%;
+            height: 85vh;
+            background: var(--gray-light);
+            position: relative;
+            overflow: hidden;
+            border: 1px solid #e0e0e0;
+        }
+        
+        iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+        
+        .frame-label {
+            position: absolute;
+            bottom: 20px;
+            right: 20px;
+            font-size: 0.8rem;
+            color: var(--gray-medium);
+            background: rgba(255, 255, 255, 0.9);
+            padding: 5px 10px;
+            z-index: 2;
+        }
+        
+        /* STATISTICHE - TIPOGRAFIA EFFICACE */
+        .stats-section {
+            margin: 10rem 0;
+            padding: 4rem 0;
+            border-top: 1px solid #eee;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .stats-title {
+            font-size: 2.5rem;
+            font-weight: 300;
+            letter-spacing: -0.02em;
+            margin-bottom: 4rem;
+            text-align: center;
+        }
+        
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 3rem;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+        
+        .stat-item {
+            text-align: left;
+            padding: 2rem 0;
+            border-bottom: 1px solid #f0f0f0;
+        }
+        
+        .stat-item:last-child {
+            border-bottom: none;
+        }
+        
+        .stat-number {
+            font-size: 4.5rem;
+            font-weight: 300;
+            letter-spacing: -0.03em;
+            line-height: 0.9;
+            margin-bottom: 0.5rem;
+            color: var(--black);
+        }
+        
+        .stat-label {
+            font-size: 1rem;
+            color: var(--gray-medium);
+            line-height: 1.4;
+            margin-bottom: 0.5rem;
+        }
+        
+        .stat-source {
+            font-size: 0.75rem;
+            color: var(--gray-medium);
+            font-style: italic;
+        }
+        
+        /* FOOTER MINIMALISTA */
+        .footer {
+            padding: 4rem 0 6rem;
+            text-align: center;
+            color: var(--gray-medium);
+            font-size: 0.9rem;
+            line-height: 1.6;
+        }
+        
+        .footer p {
+            margin-bottom: 1rem;
+        }
+        
+        /* ANIMAZIONI */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        .experience-item {
+            animation: fadeInUp 1s ease-out;
+        }
+        
+        /* RESPONSIVE */
+        @media (max-width: 1200px) {
+            .title { font-size: 4.5rem; }
+            .stats-grid { grid-template-columns: 1fr; }
+        }
+        
+        @media (max-width: 768px) {
+            .container { padding: 0 20px; }
+            .title { font-size: 3.5rem; }
+            .experience-header { flex-direction: column; }
+            .experience-meta { text-align: left; margin-top: 1rem; }
+            .nav { position: static; text-align: right; margin-bottom: 2rem; }
+            .slogan-slideshow { position: static; margin: 2rem 0; max-width: 100%; }
+            .cables-frame { height: 70vh; }
+        }
+        
+        @media (max-width: 480px) {
+            .title { font-size: 2.8rem; }
+            .stat-number { font-size: 3.5rem; }
+        }
+        
+        /* ANIMAZIONE SCROLL */
+        .scroll-hint {
+            position: fixed;
+            bottom: 120px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 0.8rem;
+            color: var(--gray-medium);
+            animation: bounce 2s infinite;
+            z-index: 1000;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+        
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% { transform: translateX(-50%) translateY(0); }
+            40% { transform: translateX(-50%) translateY(-10px); }
+            60% { transform: translateX(-50%) translateY(-5px); }
+        }
+        
+        /* HOVER EFFECTS SOTTILI */
+        .experience-title:hover {
+            color: var(--accent);
+            transition: color 0.3s ease;
+        }
+        
+        .stat-number:hover {
+            color: var(--accent);
+            transition: color 0.3s ease;
+        }
+    </style>
+</head>
+<body>
+    <!-- NAVIGAZIONE -->
+    <nav class="nav">
+        <a href="#experience-1">Volto</a>
+        <a href="#experience-2">Fiori</a>
+        <a href="#experience-3">Labbra</a>
+        <a href="#statistics">Statistiche</a>
+    </nav>
+    
+    <!-- SLOGAN ANIMATI -->
+    <div class="slogan-slideshow">
+        <div class="slogan-container">
+            <div class="slogan active">Il volto naturale è diventato un'opzione premium</div>
+            <div class="slogan">Quanti filtri separano l'io reale dall'io digitale?</div>
+            <div class="slogan">La bellezza è ora un algoritmo in continuo aggiornamento</div>
+            <div class="slogan">Ogni selfie è una negoziazione tra identità e standard</div>
+            <div class="slogan">I filtri non nascondono, rivelano le nostre ansie</div>
+            <div class="slogan">L'autenticità è l'ultimo filtro da scoprire</div>
+        </div>
+    </div>
+    
+    <!-- HINT SCROLL -->
+    <div class="scroll-hint">Scorri</div>
+    
+    <div class="container">
+        <!-- HEADER -->
+        <header class="header">
+            <h1 class="title">Dismorfia<br>Digitale</h1>
+            <p class="subtitle">Una riflessione tipografica e visiva sulla trasformazione del volto umano nell'era digitale. Tre esperienze interattive che esplorano la progressiva alterazione dell'identità attraverso filtri, maschere digitali e standard estetici artificiali.</p>
+        </header>
+        
+        <!-- ESPERIENZE -->
+        <section class="experiences">
+            <!-- ESPERIENZA 1: VOLTO NATURALE -->
+            <div class="experience-item" id="experience-1">
+                <div class="experience-header">
+                    <h2 class="experience-title">Volto<br>Naturale</h2>
+                    <div class="experience-meta">
+                        Esperienza interattiva #01<br>
+                        MediaPipe Face Mesh<br>
+                        Tempo di esplorazione: 2-3 minuti
+                    </div>
+                </div>
+                <p class="experience-description">La mappa topografica del volto umano nella sua forma geometrica pura. Ogni punto, ogni linea, ogni vertice definisce l'architettura dell'identità biologica prima di qualsiasi intervento digitale. Questa è la base, il punto zero, la tela bianca su cui si dipingeranno tutte le successive trasformazioni.</p>
+                <div class="cables-frame">
+                    <iframe 
+                        allow="autoplay; camera; microphone" 
+                        src="https://cables.gl/view/9UWBB9"
+                        loading="lazy">
+                    </iframe>
+                    <div class="frame-label">Interactive Mesh / Real-time</div>
+                </div>
+            </div>
+            
+            <!-- ESPERIENZA 2: MASCHERA FLOREALE -->
+            <div class="experience-item" id="experience-2">
+                <div class="experience-header">
+                    <h2 class="experience-title">Maschera<br>Floreale</h2>
+                    <div class="experience-meta">
+                        Esperienza interattiva #02<br>
+                        Digital Overlay Transformation<br>
+                        Tempo di esplorazione: 3-4 minuti
+                    </div>
+                </div>
+                <p class="experience-description">La prima alterazione, la seduzione digitale. Petali virtuali che crescono sui lineamenti naturali, adornando e contemporaneamente mascherando. Questa è la porta d'ingresso verso la dismorfia: ciò che inizia come abbellimento floreale evolve gradualmente in copertura, in mascheramento, in sostituzione dell'organico con il digitale.</p>
+                <div class="cables-frame">
+                    <iframe 
+                        allow="autoplay; camera; microphone" 
+                        src="https://cables.gl/view/QDEzP4"
+                        loading="lazy">
+                    </iframe>
+                    <div class="frame-label">Floral Filter / AR Overlay</div>
+                </div>
+            </div>
+            
+            <!-- ESPERIENZA 3: LABBRA BOTOX -->
+            <div class="experience-item" id="experience-3">
+                <div class="experience-header">
+                    <h2 class="experience-title">Esagerazione<br>Artificiale</h2>
+                    <div class="experience-meta">
+                        Esperienza interattiva #03<br>
+                        Progressive Distortion<br>
+                        Tempo di esplorazione: 3-5 minuti
+                    </div>
+                </div>
+                <p class="experience-description">L'apice della trasformazione, il punto di non ritorno. Le labbra si dilatano oltre i confini anatomici, diventando simboli ipertrofici di una bellezza standardizzata. Non più miglioramento, ma sostituzione. Non più abbellimento, ma ricostruzione. Qui l'identità individuale cede il passo a uno standard universale, misurabile, riproducibile.</p>
+                <div class="cables-frame">
+                    <iframe 
+                        allow="autoplay; camera; microphone" 
+                        src="https://cables.gl/view/tCrBC9"
+                        loading="lazy">
+                    </iframe>
+                    <div class="frame-label">Botox Simulation / Progressive</div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- STATISTICHE -->
+        <section class="stats-section" id="statistics">
+            <h2 class="stats-title">La Realtà in Numeri</h2>
+            <div class="stats-grid">
+                <div class="stat-item">
+                    <div class="stat-number">86<span style="font-size: 2rem;">%</span></div>
+                    <div class="stat-label">delle donne italiane tra i 18 e i 35 anni utilizza regolarmente filtri di bellezza sulle piattaforme social.</div>
+                    <div class="stat-source">Osservatorio Nazionale Adolescenza, 2023</div>
+                </div>
+                
+                <div class="stat-item">
+                    <div class="stat-number">1<span style="font-size: 2rem;">/3</span></div>
+                    <div class="stat-label">delle giovani donne under 30 ha già considerato interventi estetici dopo l'uso prolungato di filtri digitali.</div>
+                    <div class="stat-source">Società Italiana di Medicina Estetica, 2023</div>
+                </div>
+                
+                <div class="stat-item">
+                    <div class="stat-number">+320<span style="font-size: 2rem;">%</span></div>
+                    <div class="stat-label">l'aumento delle richieste di filler labbra tra le ragazze di 18-25 anni negli ultimi cinque anni.</div>
+                    <div class="stat-source">Associazione Italiana Chirurgia Plastica Estetica, 2023</div>
+                </div>
+                
+                <div class="stat-item">
+                    <div class="stat-number">45<span style="font-size: 2rem;">min</span></div>
+                    <div class="stat-label">il tempo medio giornaliero che una ragazza tra i 14 e i 19 anni dedica alla modifica delle proprie foto.</div>
+                    <div class="stat-source">Digital Wellness Lab, Università di Bologna, 2023</div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- FOOTER -->
+        <footer class="footer">
+            <p>Dismorfia Digitale è un progetto di ricerca visiva sulla trasformazione dell'identità umana nell'era algoritmica.</p>
+            <p>Le tre esperienze interattive esplorano la progressiva alterazione del volto attraverso filtri digitali,</p>
+            <p>maschere AR e standard estetici artificiali. Un'indagine sul confine tra abbellimento e distorsione,</p>
+            <p>tra identità personale e standardizzazione digitale.</p>
+            <p style="margin-top: 2rem;">© 2024 Dismorfia Digitale. Tutti i contenuti interattivi sviluppati con Cables.gl</p>
+            <p>Le statistiche presenti sono basate su ricerche italiane condotte tra il 2022 e il 2023.</p>
+        </footer>
+    </div>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // SLIDESHOW SLOGAN
+            const slogans = document.querySelectorAll('.slogan');
+            let currentSlogan = 0;
+            
+            function rotateSlogans() {
+                // Rimuovi classe active da tutti
+                slogans.forEach(slogan => {
+                    slogan.classList.remove('active');
+                });
+                
+                // Aggiungi classe active al corrente
+                slogans[currentSlogan].classList.add('active');
+                
+                // Incrementa indice
+                currentSlogan = (currentSlogan + 1) % slogans.length;
+            }
+            
+            // Inizia la rotazione ogni 5 secondi
+            setInterval(rotateSlogans, 5000);
+            
+            // Animazione iniziale
+            setTimeout(() => {
+                rotateSlogans();
+            }, 1000);
+            
+            // ANIMAZIONE SCROLL ITEMS
+            const observerOptions = {
+                threshold: 0.1,
+                rootMargin: '0px 0px -100px 0px'
+            };
+            
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.style.opacity = '1';
+                        entry.target.style.transform = 'translateY(0)';
+                    }
+                });
+            }, observerOptions);
+            
+            // Osserva esperienze
+            document.querySelectorAll('.experience-item').forEach(el => {
+                el.style.opacity = '0';
+                el.style.transform = 'translateY(40px)';
+                el.style.transition = 'opacity 1s ease, transform 1s ease';
+                observer.observe(el);
+            });
+            
+            // NAVIGAZIONE SMOOTH
+            document.querySelectorAll('.nav a').forEach(link => {
+                link.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    const targetId = link.getAttribute('href').substring(1);
+                    const targetElement = document.getElementById(targetId);
+                    
+                    if (targetElement) {
+                        window.scrollTo({
+                            top: targetElement.offsetTop - 100,
+                            behavior: 'smooth'
+                        });
+                    }
+                });
+            });
+            
+            // INTERAZIONE CON IFRAME
+            const frames = document.querySelectorAll('iframe');
+            frames.forEach(frame => {
+                frame.addEventListener('load', () => {
+                    console.log('Frame loaded:', frame.src);
+                    frame.parentElement.style.borderColor = '#ccc';
+                });
+                
+                frame.addEventListener('mouseenter', () => {
+                    frame.parentElement.style.borderColor = '#999';
+                });
+                
+                frame.addEventListener('mouseleave', () => {
+                    frame.parentElement.style.borderColor = '#e0e0e0';
+                });
+            });
+            
+            // ANIMAZIONE NUMERI STATISTICHE
+            const statNumbers = document.querySelectorAll('.stat-number');
+            const statObserver = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        const numberElement = entry.target;
+                        const originalText = numberElement.textContent;
+                        const finalNumber = parseFloat(originalText.replace(/[^0-9.]/g, ''));
+                        
+                        // Reset per animazione
+                        numberElement.textContent = '0';
+                        numberElement.style.opacity = '1';
+                        
+                        // Animazione conteggio
+                        let current = 0;
+                        const increment = finalNumber / 30;
+                        const timer = setInterval(() => {
+                            current += increment;
+                            if (current >= finalNumber) {
+                                clearInterval(timer);
+                                numberElement.textContent = originalText;
+                            } else {
+                                // Mantieni il formato (%, /, ecc.)
+                                const prefix = originalText.replace(/[0-9.]/g, '');
+                                const displayNumber = Math.floor(current);
+                                numberElement.textContent = displayNumber + prefix;
+                            }
+                        }, 50);
+                        
+                        statObserver.unobserve(numberElement);
+                    }
+                });
+            }, { threshold: 0.5 });
+            
+            statNumbers.forEach(number => {
+                number.style.opacity = '0.3';
+                statObserver.observe(number);
+            });
+            
+            // NASCONDI SCROLL HINT DOPO PRIMO SCROLL
+            let scrollHint = document.querySelector('.scroll-hint');
+            window.addEventListener('scroll', () => {
+                if (window.scrollY > 300) {
+                    scrollHint.style.opacity = '0';
+                    scrollHint.style.transition = 'opacity 1s ease';
+                }
+            });
+        });
+    </script>
+</body>
+</html>
